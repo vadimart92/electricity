@@ -12,7 +12,7 @@ public class check_locations
     }
 
     [Function("check_locations")]
-    public async Task Run([TimerTrigger("0 */5 * * * *")]FunctionContext context) {
+    public async Task Run([TimerTrigger("0 */10 * * * *")]FunctionContext context) {
         try {
             await _stateProcessor.MarkOfflineWhereNeeded();
         } catch (Exception e) {
