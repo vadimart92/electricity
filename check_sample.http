@@ -1,0 +1,25 @@
+﻿GET https://electricity-monitor.azurewebsites.net/api/health_check?code=KwL_60o3maNdl1cfGwmHX_s_unPm3oK_UCTImm3OoC38AzFuJtC_9w%3D%3D&locationId=2d38107e-fe61-442d-bbd2-ee50a90ab8d1
+Accept: application/json
+
+###
+GET https://api.telegram.org/bot5914377637:AAGRQm8edApvGAp1mbitzOIV5S579o3eSv8/sendMessage?chat_id=-1001890891997&text=🔴MY_MESSAGE_TEXT1
+Accept: application/json
+
+###
+GET http://localhost:7071/api/health_check?locationId=2d38107e-fe61-442d-bbd2-ee50a90ab8d1
+Accept: application/json
+
+###
+GET http://192.168.1.93:7071/api/health_check?locationId=2d38107e-fe61-442d-bbd2-ee50a90ab8d1
+Accept: application/json
+
+###
+GET http://0.0.0.0:7071/api/health_check?locationId=2d38107e-fe61-442d-bbd2-ee50a90ab8d1
+Accept: application/json
+
+###
+
+GET http://localhost:7071/api/db_init
+Accept: application/json
+
+##
