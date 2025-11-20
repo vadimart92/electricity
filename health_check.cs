@@ -1,4 +1,6 @@
 using System.Net;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -16,25 +18,19 @@ namespace electricity
         }
         
         [Function("health_check")]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req,
-            FunctionContext executionContext) {
-            var response = req.CreateResponse(HttpStatusCode.OK);
-            response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-            if (!executionContext.BindingContext.BindingData.TryGetValue("locationId", out var locationIdValue) ||
-                    !Guid.TryParse(locationIdValue?.ToString(), out var locationId)) {
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequest req) {
+            if (!Guid.TryParse(req.Query["locationId"].ToString(), out var locationId)) {
                 _logger.LogDebug("Location id not provided");
-               await response.WriteStringAsync("Provide locationId");
-               return response;
+               return new OkObjectResult("Provide locationId");
             }
             var marked = await _stateProcessor.MarkOnline(locationId);
             if (!marked) {
                 _logger.LogDebug("Location {Location} not found", locationId);
-                await response.WriteStringAsync($"Location with id {locationId} not found");
+                return new OkObjectResult($"Location with id {locationId} not found");
             } else {
                 _logger.LogDebug("Location {Location} marked as live", locationId);
-                await response.WriteStringAsync($"Success: {DateTime.UtcNow}");
+                return new OkObjectResult($"Success: {DateTime.UtcNow}");
             }
-            return response;
         }
     }
 }
